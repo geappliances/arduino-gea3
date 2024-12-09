@@ -13,12 +13,12 @@
       "maintainer": true
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.2",
   "frameworks": "Arduino",
   "platforms": "*",
-  "examples": "examples/*/*.ino",
   "export": {
     "include": [
+      "examples/*",
       "include/*",
       "src/*"
     ]
