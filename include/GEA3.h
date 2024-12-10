@@ -11,7 +11,7 @@
 #include <memory>
 
 extern "C" {
-#include "tiny_erd_client.h"
+#include "tiny_gea3_erd_client.h"
 #include "tiny_gea3_interface.h"
 #include "tiny_stream_uart.h"
 #include "tiny_timer.h"
@@ -65,7 +65,7 @@ class GEA3 {
     }
 
    private:
-    Packet(const tiny_gea3_packet_t* packet)
+    Packet(const tiny_gea_packet_t* packet)
     {
       this->rawPacket = std::unique_ptr<char[]>(new char[sizeof(RawPacket) + packet->payload_length]);
       RawPacket* rawPacket = reinterpret_cast<RawPacket*>(this->rawPacket.get());
@@ -84,9 +84,9 @@ class GEA3 {
 
     std::unique_ptr<char[]> rawPacket;
 
-    const tiny_gea3_packet_t* getRawPacket() const
+    const tiny_gea_packet_t* getRawPacket() const
     {
-      return reinterpret_cast<const tiny_gea3_packet_t*>(this->rawPacket.get());
+      return reinterpret_cast<const tiny_gea_packet_t*>(this->rawPacket.get());
     }
   };
 
@@ -182,7 +182,7 @@ class GEA3 {
       uint8_t address,
       void* context,
       void (*callback)(void*, uint16_t, const void*, uint8_t valueSize),
-      i_tiny_erd_client_t* erdClient,
+      i_tiny_gea3_erd_client_t* erdClient,
       tiny_timer_group_t* timerGroup)
       : address(address), context(context), callback(callback), erdClient(erdClient), timerGroup(timerGroup), timer(), subscription()
     {
@@ -190,7 +190,7 @@ class GEA3 {
     uint8_t address;
     void* context;
     void (*callback)(void* context, uint16_t erd, const void* value, uint8_t valueSize);
-    i_tiny_erd_client_t* erdClient;
+    i_tiny_gea3_erd_client_t* erdClient;
     tiny_timer_group_t* timerGroup;
     tiny_timer_t timer;
     tiny_event_subscription_t subscription;
@@ -199,7 +199,7 @@ class GEA3 {
  public:
   class PacketListener {
    public:
-    PacketListener(PrivatePacketListener* subscription, i_tiny_gea3_interface_t* interface)
+    PacketListener(PrivatePacketListener* subscription, i_tiny_gea_interface_t* interface)
       : subscription(subscription), interface(interface)
     {
     }
@@ -207,7 +207,7 @@ class GEA3 {
     void cancel()
     {
       if(subscription != nullptr) {
-        tiny_event_unsubscribe(tiny_gea3_interface_on_receive(interface), &subscription->subscription);
+        tiny_event_unsubscribe(tiny_gea_interface_on_receive(interface), &subscription->subscription);
         delete subscription;
         subscription = nullptr;
       }
@@ -215,7 +215,7 @@ class GEA3 {
 
    private:
     PrivatePacketListener* subscription;
-    i_tiny_gea3_interface_t* interface;
+    i_tiny_gea_interface_t* interface;
   };
 
   class ErdSubscription {
@@ -229,7 +229,7 @@ class GEA3 {
     {
       if(subscription != nullptr) {
         tiny_timer_stop(subscription->timerGroup, &subscription->timer);
-        tiny_event_unsubscribe(tiny_erd_client_on_activity(subscription->erdClient), &subscription->subscription);
+        tiny_event_unsubscribe(tiny_gea3_erd_client_on_activity(subscription->erdClient), &subscription->subscription);
         delete subscription;
         subscription = nullptr;
       }
@@ -395,8 +395,8 @@ class GEA3 {
   uint8_t receiveBuffer[255];
   uint8_t sendQueueBuffer[1000];
 
-  tiny_erd_client_t erdClient;
-  tiny_erd_client_configuration_t clientConfiguration;
+  tiny_gea3_erd_client_t erdClient;
+  tiny_gea3_erd_client_configuration_t clientConfiguration;
   uint8_t clientQueueBuffer[1024];
 };
 
