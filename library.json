@@ -24,7 +24,7 @@
     ]
   },
   "dependencies": {
-    "geappliances/tiny-gea-api": "^1.0.1",
+    "geappliances/tiny-gea-api": "^2.0.1",
     "ryanplusplus/arduino-tiny": "^5.0.0"
   }
 }
