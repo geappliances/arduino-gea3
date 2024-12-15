@@ -265,8 +265,8 @@ class GEA3 {
   {
     readERDAsync(
       address, erd, reinterpret_cast<void*>(callback), +[](void* context, ReadStatus status, const void* value_, uint8_t valueSize) {
-        (void)valueSize;
-        auto value = *reinterpret_cast<const T*>(value_);
+        T value;
+        memcpy(&value, value_, min(valueSize, sizeof(T)));
         reinterpret_cast<void (*)(ReadStatus, T)>(context)(status, value);
       });
   }
@@ -289,8 +289,8 @@ class GEA3 {
 
     readERDAsync(
       address, erd, reinterpret_cast<void*>(wrappedContext), +[](void* context_, ReadStatus status, const void* value_, uint8_t valueSize) {
-        (void)valueSize;
-        auto value = *reinterpret_cast<const T*>(value_);
+        T value;
+        memcpy(&value, value_, min(valueSize, sizeof(T)));
         auto* wrappedContext = reinterpret_cast<WrappedContext*>(context_);
         wrappedContext->callback(wrappedContext->context, status, value);
         delete wrappedContext;
