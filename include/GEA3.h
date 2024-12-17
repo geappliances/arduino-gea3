@@ -391,9 +391,8 @@ class GEA3 {
   tiny_stream_uart_t streamUart;
 
   tiny_gea3_interface_t gea3Interface;
-  uint8_t sendBuffer[255];
+  uint8_t sendQueueBuffer[500];
   uint8_t receiveBuffer[255];
-  uint8_t sendQueueBuffer[1000];
 
   tiny_gea3_erd_client_t erdClient;
   tiny_gea3_erd_client_configuration_t clientConfiguration;

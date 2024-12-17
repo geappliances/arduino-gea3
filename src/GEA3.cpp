@@ -45,12 +45,10 @@ void GEA3::begin(Stream& uart, uint8_t clientAddress, uint32_t requestTimeout, u
     &gea3Interface,
     &streamUart.interface,
     clientAddress,
-    sendBuffer,
-    sizeof(sendBuffer),
-    receiveBuffer,
-    sizeof(receiveBuffer),
     sendQueueBuffer,
     sizeof(sendQueueBuffer),
+    receiveBuffer,
+    sizeof(receiveBuffer),
     false);
 
   clientConfiguration.request_timeout = requestTimeout;
