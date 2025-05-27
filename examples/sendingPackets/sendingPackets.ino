@@ -11,7 +11,7 @@ void setup()
 
   gea3.begin(Serial1);
 
-  gea3.sendPacket(GEA3::Packet(0xE4, 0xFF, { 0x01 }));
+  gea3.sendPacket(GEA3::Packet(0xE4, GEA3::broadcastAddress, { 0x01 }));
 }
 
 void loop()

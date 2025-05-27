@@ -92,6 +92,7 @@ class GEA3 {
 
   static constexpr unsigned long baud = 230400;
   static constexpr uint8_t defaultAddress = 0xC0;
+  static constexpr uint8_t broadcastAddress = 0xFF;
 
   template <typename T>
   class IntegerWrapper {
